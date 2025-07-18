@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Productivity Prompts | MetaPrompts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Base Styles (Consistent with Prompts Page for overall theme) */
+        body {
+            font-family: 'Lexend', sans-serif; /* Using Lexend for consistency */
+            background-color: #eef2f7; /* Very light blue-grey background */
+            color: #333; /* Dark text for readability */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center; /* Center content horizontally */
+            overflow-x: hidden;
+            box-sizing: border-box; /* Ensure padding doesn't cause overflow */
+        }
+
+        /* Main Container for the page content */
+        .page-container {
+            width: 90%;
+            max-width: 1200px; /* Wider max-width for content flow */
+            margin: 40px auto;
+            background-color: #ffffff; /* Pure white background for the container */
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Soft, subtle shadow */
+            padding: 40px;
+            border: 1px solid #e0e0e0; /* Light, almost invisible border */
+            flex-grow: 1; /* Allow container to grow and push footer down */
+        }
+
+        /* Header Styling with Navigation Buttons */
+        .header-with-nav {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eef2f7; /* Soft separator matching background */
+            position: relative; /* Needed for positioning the nav buttons on desktop */
+            display: flex; /* Use flexbox to align internal elements */
+            align-items: center; /* Vertically center items */
+            justify-content: center; /* Center the title initially on desktop */
+            min-height: 80px; /* Ensure enough space for buttons */
+        }
+
+        .header-with-nav h2 {
+            font-size: 2.8em; /* Lowered bold heading */
+            font-weight: 700;
+            color: #007bff; /* Primary blue for the main title */
+            margin: 0;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 8px rgba(0, 123, 255, 0.2); /* Subtle blue shadow */
+        }
+
+        /* Navigation Buttons Base Styles (Desktop) */
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #6f42c1; /* Purple background for home */
+            color: #ffffff; /* White text */
+            text-decoration: none;
+            padding: 10px 20px; /* Slightly smaller padding */
+            border-radius: 30px; /* Pill shape */
+            font-size: 0.95em; /* Slightly smaller font size */
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+            display: inline-flex; /* Use flex to align icon/text if both present */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-button:hover {
+            background-color: #5b36a1; /* Darker purple on hover */
+            transform: translateY(-50%) scale(1.05); /* Slight scale up on hover */
+            box-shadow: 0 6px 20px rgba(111, 66, 193, 0.4);
+        }
+
+        /* Specific Home Button Placement (Desktop) */
+        .home-button {
+            right: 40px;
+        }
+
+        /* Specific Back Button Placement & Styling (Desktop) */
+        .back-button {
+            left: 40px;
+            background: none; /* No background */
+            border: none; /* No border */
+            cursor: pointer;
+            padding: 10px; /* Make clickable area larger */
+            font-size: 2.2em; /* Large enough for arrow */
+            color: #007bff; /* Blue arrow color */
+            transition: all 0.2s ease-in-out;
+            line-height: 1; /* Adjust line height for icon */
+            text-decoration: none; /* For the link */
+            box-shadow: none; /* No shadow */
+        }
+
+        .back-button:hover {
+            color: #6f42c1; /* Purple on hover */
+            transform: translateY(-50%) translateX(-5px); /* Slight slide effect */
+            background: none; /* Ensure no background on hover */
+            box-shadow: none; /* Ensure no shadow on hover */
+        }
+
+        /* Hide icon/text on desktop */
+        .nav-button .button-icon {
+            display: none; /* Hide icons on desktop */
+        }
+        .nav-button .button-text {
+            display: inline; /* Show text on desktop */
+        }
+
+        /* Prompt Grid and Card Styling */
+        .prompt-grid {
+            display: grid;
+            gap: 1.5rem; /* Consistent gap */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive columns */
+            width: 100%; /* Ensure it fills container width */
+        }
+
+        .prompt-card {
+            background-color: #f8faff; /* Light blue background for cards */
+            padding: 1.5rem;
+            border-radius: 12px; /* Consistent border-radius */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Soft shadow */
+            border: 1px solid #cceeff; /* Light blue border */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease-in-out; /* Smooth hover effect */
+            min-height: 180px; /* Ensure cards have good height */
+        }
+
+        .prompt-card:hover {
+            transform: translateY(-8px); /* Lift card on hover */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            border-color: #8a2be2; /* Purple tint border on hover */
+        }
+
+        /* Changes for prompt-card content */
+        .prompt-title { /* New style for the title in the card */
+            color: #007bff; /* Primary blue for titles */
+            font-size: 1.15rem; /* Slightly smaller for bold headings */
+            font-weight: 600;
+            margin-bottom: 1rem;
+            flex-grow: 1; /* Allows title to take available space */
+            line-height: 1.5;
+        }
+
+        .prompt-actions {
+            display: flex;
+            justify-content: flex-end; /* Align buttons to the right */
+            gap: 8px; /* Slightly smaller space between buttons */
+            margin-top: 10px; /* Space above buttons */
+        }
+
+        .action-btn { /* General style for action buttons */
+            background-color: #007bff; /* Primary blue button */
+            color: #ffffff;
+            font-weight: 600;
+            padding: 0.5rem 1rem; /* Smaller padding */
+            border-radius: 6px; /* Slightly less rounded */
+            transition: background-color 0.3s ease-in-out, transform 0.1s ease-in-out;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2); /* Subtle shadow for button */
+            font-size: 0.9em; /* Smaller font size for buttons */
+        }
+
+        .action-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        }
+
+        .action-btn.copied { /* Using a class for copied state */
+            background-color: #28a745; /* Green for copied */
+            box-shadow: 0 2px 5px rgba(40, 167, 69, 0.3);
+        }
+
+        .action-btn.copied:hover {
+            background-color: #218838;
+        }
+
+        .show-preview-btn { /* Specific style for show preview button */
+            background-color: #6f42c1; /* Purple for preview button */
+            color: #ffffff;
+        }
+
+        .show-preview-btn:hover {
+            background-color: #5b36a1; /* Darker purple on hover */
+        }
+
+        /* --- Popup Modal Styles --- */
+        .modal {
+            display: none; /* THIS IS THE KEY: Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            align-items: center; /* Center vertically */
+            justify-content: center; /* Center horizontally */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 90%; /* Responsive width */
+            max-width: 800px; /* Max width for large screens */
+            height: 80%; /* Takes up 80% of viewport height */
+            max-height: 90vh; /* Max height to prevent overflowing viewport */
+            display: flex; /* Ensure content inside is flex for layout */
+            flex-direction: column;
+            position: relative;
+            animation: fadeInScale 0.3s ease-out; /* Simple entry animation */
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.6em; /* Lowered bold heading */
+            color: #007bff;
+            margin: 0;
+        }
+
+        .close-button {
+            color: #aaa;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #333;
+        }
+
+        .modal-prompt-text {
+            flex-grow: 1; /* Allows the text area to expand */
+            background-color: #eef2f7;
+            border: 1px solid #cceeff;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.1em;
+            color: #34495e;
+            line-height: 1.6;
+            overflow-y: auto; /* Makes the text area scrollable */
+            white-space: pre-wrap; /* Preserves whitespace and wraps text */
+            word-wrap: break-word; /* Breaks long words */
+            resize: none; /* Prevent manual resizing */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+        }
+
+        /* Footer Styling */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #6c757d;
+            text-shadow: none;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .page-container {
+                padding: 30px;
+            }
+            .header-with-nav h2 {
+                font-size: 2.5em; /* Slightly smaller */
+            }
+            .nav-button {
+                padding: 8px 18px; /* Slightly smaller padding */
+                font-size: 0.9em; /* Slightly smaller font */
+            }
+            .home-button {
+                right: 30px;
+            }
+            .back-button {
+                left: 30px;
+                font-size: 2em; /* Smaller icon */
+            }
+            .prompt-grid {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            }
+            .prompt-card {
+                font-size: 1.1em;
+                min-height: 160px;
+            }
+            .prompt-title {
+                font-size: 1.1em; /* Smaller heading */
+            }
+            .action-btn {
+                padding: 0.4rem 0.9rem; /* Smaller buttons */
+                font-size: 0.85em;
+            }
+            .modal-content {
+                width: 95%;
+                height: 85%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                margin: 30px auto;
+                padding: 25px;
+            }
+            .header-with-nav {
+                /* Use flexbox to align elements in a row, with buttons on the left */
+                display: flex;
+                flex-direction: row; /* Ensure items are in a row */
+                justify-content: flex-start; /* Align items to the start (left) */
+                align-items: center; /* Vertically center items */
+                position: static; /* Remove absolute positioning context */
+                margin-bottom: 30px; /* Adjust spacing */
+                padding-bottom: 20px;
+                flex-wrap: nowrap; /* Prevent wrapping for button-button-text layout */
+                gap: 10px; /* Gap between buttons and title */
+            }
+            .header-with-nav h2 {
+                font-size: 1.8em; /* Further reduced font size for mobile header */
+                order: 2; /* Title comes after both buttons */
+                flex-shrink: 1; /* Allow title to shrink if needed */
+                text-align: left; /* Align title to the left */
+                margin: 0; /* Remove specific margins, let gap handle spacing */
+                min-width: 0; /* Allow text to shrink below its content size */
+            }
+            /* Navigation Buttons (Mobile - Icon only and smaller) */
+            .nav-button {
+                position: static; /* Make buttons flow naturally */
+                transform: none; /* Remove transforms */
+                margin: 0; /* Reset margins */
+                display: flex; /* Use flex for icon centering */
+                align-items: center;
+                justify-content: center;
+                width: 38px; /* Even smaller width */
+                height: 38px; /* Even smaller height */
+                padding: 0; /* Remove padding, use width/height */
+                font-size: 1.1em; /* Adjusted icon size */
+                border-radius: 50%; /* Make them round */
+                box-shadow: 0 2px 6px rgba(111, 66, 193, 0.15); /* Slightly less shadow */
+            }
+            .nav-button:hover {
+                transform: none; /* Override desktop hover transform */
+            }
+
+            .nav-button .button-text {
+                display: none; /* Hide text on mobile */
+            }
+            .nav-button .button-icon {
+                display: inline; /* Show icon on mobile */
+            }
+
+            .back-button {
+                order: 0; /* Back button first on the left */
+                background-color: #007bff; /* Blue background for back button */
+                color: #ffffff; /* White icon */
+                box-shadow: 0 2px 6px rgba(0, 123, 255, 0.15); /* Shadow for back button */
+                margin-right: 8px; /* Space between back and home button */
+            }
+            .back-button:hover { /* Ensure hover styles for icon buttons are consistent */
+                background-color: #0056b3; /* Darker blue on hover */
+                transform: none; /* Remove horizontal shift on hover for icon button */
+            }
+
+            .home-button {
+                order: 1; /* Home button second on the left */
+                background-color: #6f42c1; /* Consistent purple */
+                color: #ffffff;
+            }
+
+            .prompt-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two columns on mobile */
+                gap: 1.2rem;
+            }
+            .prompt-card {
+                font-size: 1em;
+                min-height: 140px;
+            }
+            .prompt-title {
+                font-size: 1em; /* Smaller heading */
+            }
+            .action-btn {
+                padding: 0.35rem 0.8rem; /* Even smaller buttons */
+                font-size: 0.8em;
+            }
+            .modal-content {
+                width: 95%;
+                height: 90%;
+                padding: 20px;
+            }
+            .modal-header h3 {
+                font-size: 1.4em; /* Smaller heading */
+            }
+            .modal-prompt-text {
+                font-size: 1em;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-container {
+                margin: 20px auto;
+                padding: 15px;
+                border-radius: 10px;
+            }
+            .header-with-nav {
+                justify-content: flex-start; /* Keep to left */
+                margin-bottom: 20px;
+                flex-wrap: wrap; /* Allow wrapping for very small screens if title is long */
+                gap: 8px; /* Slightly less gap */
+            }
+            .header-with-nav h2 {
+                font-size: 1.4em; /* Smallest heading */
+                flex-basis: auto; /* Allow it to take only necessary width */
+                margin-top: 0; /* Remove top margin from earlier stack */
+                text-align: left; /* Keep left aligned */
+                margin-left: 0; /* Reset margin */
+                flex-grow: 1; /* Let it grow to fill space */
+            }
+            .nav-button {
+                width: 36px; /* Even smaller button */
+                height: 36px;
+                font-size: 1em; /* Even smaller icon */
+            }
+            .back-button {
+                margin-right: 6px; /* Reduced space */
+            }
+            .prompt-grid {
+                grid-template-columns: 1fr; /* Single column on very small phones */
+                gap: 1rem;
+            }
+            .prompt-card {
+                font-size: 0.9em;
+                min-height: 100px;
+                padding: 1.2rem;
+            }
+            .prompt-title {
+                font-size: 0.95em; /* Smallest heading */
+            }
+            .action-btn {
+                padding: 0.3rem 0.7rem; /* Smallest buttons */
+                font-size: 0.75em;
+            }
+            .modal-content {
+                width: 98%;
+                height: 95%;
+                padding: 15px;
+            }
+            .modal-header h3 {
+                font-size: 1.2em;
+            }
+            .modal-prompt-text {
+                font-size: 0.9em;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <header class="header-with-nav">
+            <a href="../prompts.html" class="back-button nav-button" aria-label="Go back to categories page">
+                <span class="button-text">Back</span>
+                <i class="fas fa-arrow-left button-icon"></i>
+            </a>
+            <a href="../index.html" class="home-button nav-button" aria-label="Go to home page">
+                <span class="button-text">Home</span>
+                <i class="fas fa-home button-icon"></i>
+            </a>
+            <h2>Category: Students</h2>
+        </header>
+
+        <main class="prompt-grid">
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+            
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+
+            <div class="prompt-card" data-prompt-id="p001">
+                <p class="prompt-title"> </p>
+                <div class="prompt-actions">
+                    <button class="action-btn show-preview-btn" onclick="showPromptPreview(this)">Show Preview</button>
+                    <button class="action-btn copy-btn" onclick="copyPromptFromCard(this)">Copy</button>
+                </div>
+                <div class="hidden-prompt" style="display: none;">
+                    
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 MetaPrompts. All rights reserved.</p>
+    </footer>
+
+    <div id="promptPreviewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalPromptTitle">Prompt Preview</h3>
+                <span class="close-button" onclick="closePromptPreview()">&times;</span>
+            </div>
+            <pre id="modalPromptText" class="modal-prompt-text"></pre>
+            <div class="modal-actions">
+                <button class="action-btn copy-btn" id="modalCopyButton" onclick="copyPromptFromModal(this)">Copy Prompt</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Copies text to the clipboard and provides visual feedback.
+         * @param {string} textToCopy - The text string to copy.
+         * @param {HTMLButtonElement} buttonElement - The button element that initiated the copy.
+         */
+        function copyTextToClipboard(textToCopy, buttonElement) {
+            const originalButtonText = buttonElement.innerText; // Store original text
+
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        buttonElement.innerText = 'Copied!';
+                        buttonElement.classList.add('copied');
+                        setTimeout(() => {
+                            buttonElement.innerText = originalButtonText;
+                            buttonElement.classList.remove('copied');
+                        }, 1500);
+                    }).catch(err => {
+                        console.error('Failed to copy text using Clipboard API: ', err);
+                        // Fallback in case of permission issues or other Clipboard API failures
+                        fallbackCopyTextToClipboard(textToCopy, buttonElement, originalButtonText);
+                    });
+                } else {
+                    // Fallback for browsers that don't support Clipboard API
+                    fallbackCopyTextToClipboard(textToCopy, buttonElement, originalButtonText);
+                }
+            } catch (err) {
+                console.error('Failed to initiate copy: ', err);
+                // Catch any other unexpected errors during the Clipboard API attempt
+                fallbackCopyTextToClipboard(textToCopy, buttonElement, originalButtonText);
+            }
+        }
+
+        /**
+         * Fallback function for older browsers or if Clipboard API fails.
+         * @param {string} textToCopy - The text string to copy.
+         * @param {HTMLButtonElement} buttonElement - The button element that initiated the copy.
+         * @param {string} originalButtonText - The original text of the button.
+         */
+        function fallbackCopyTextToClipboard(textToCopy, buttonElement, originalButtonText) {
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = textToCopy;
+            tempTextArea.style.position = 'absolute';
+            tempTextArea.style.left = '-9999px';
+            document.body.appendChild(tempTextArea);
+
+            tempTextArea.select();
+            tempTextArea.setSelectionRange(0, 99999); // For mobile devices to ensure full selection
+
+            try {
+                document.execCommand('copy');
+                buttonElement.innerText = 'Copied!';
+                buttonElement.classList.add('copied');
+                setTimeout(() => {
+                    buttonElement.innerText = originalButtonText;
+                    buttonElement.classList.remove('copied');
+                }, 1500);
+            } catch (err) {
+                console.error('Failed to copy text with execCommand: ', err);
+                buttonElement.innerText = 'Failed!';
+                setTimeout(() => {
+                    buttonElement.innerText = originalButtonText;
+                }, 1500);
+            } finally {
+                document.body.removeChild(tempTextArea);
+            }
+        }
+
+        /**
+         * Copies the prompt text directly from the card.
+         * @param {HTMLButtonElement} buttonElement - The 'Copy' button clicked on the card.
+         */
+        function copyPromptFromCard(buttonElement) {
+            const promptCard = buttonElement.closest('.prompt-card');
+            const promptTextElement = promptCard.querySelector('.hidden-prompt'); // Get the hidden prompt text
+            if (promptTextElement) {
+                copyTextToClipboard(promptTextElement.innerText, buttonElement);
+            } else {
+                console.error('Hidden prompt text not found in card.');
+            }
+        }
+
+        // --- Popup Modal Functions ---
+        const promptPreviewModal = document.getElementById('promptPreviewModal');
+        const modalPromptTitle = document.getElementById('modalPromptTitle');
+        const modalPromptText = document.getElementById('modalPromptText');
+        const modalCopyButton = document.getElementById('modalCopyButton');
+        let currentPromptText = ''; // To store the prompt currently displayed in the modal
+
+        /**
+         * Shows the prompt preview modal with the selected prompt.
+         * @param {HTMLButtonElement} buttonElement - The 'Show Preview' button clicked.
+         */
+        function showPromptPreview(buttonElement) {
+            const promptCard = buttonElement.closest('.prompt-card');
+            const titleElement = promptCard.querySelector('.prompt-title');
+            const hiddenPromptElement = promptCard.querySelector('.hidden-prompt');
+
+            if (titleElement && hiddenPromptElement) {
+                modalPromptTitle.innerText = titleElement.innerText; // Set modal title
+                modalPromptText.innerText = hiddenPromptElement.innerText; // Set modal prompt content
+                currentPromptText = hiddenPromptElement.innerText; // Store for copying
+
+                // Show the modal by changing its display property
+                promptPreviewModal.style.display = 'flex'; // Use 'flex' to enable centering
+
+                // Reset copy button state in modal
+                modalCopyButton.innerText = 'Copy Prompt';
+                modalCopyButton.classList.remove('copied');
+            } else {
+                console.error('Could not find prompt title or hidden prompt text.');
+            }
+        }
+
+        /**
+         * Closes the prompt preview modal.
+         */
+        function closePromptPreview() {
+            promptPreviewModal.style.display = 'none'; // Hide the modal
+        }
+
+        /**
+         * Copies the prompt text from the currently open modal.
+         * @param {HTMLButtonElement} buttonElement - The 'Copy Prompt' button in the modal.
+         */
+        function copyPromptFromModal(buttonElement) {
+            if (currentPromptText) {
+                copyTextToClipboard(currentPromptText, buttonElement);
+            } else {
+                console.error('No prompt text available to copy from modal.');
+            }
+        }
+
+        // Close the modal if the user clicks anywhere outside of the modal content
+        window.onclick = function(event) {
+            if (event.target == promptPreviewModal) {
+                closePromptPreview();
+            }
+        }
+
+        // Handle back button click for navigation
+        document.querySelector('.back-button').addEventListener('click', function(event) {
+            // Check if the previous page exists in history
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // Fallback to prompts.html if no history (e.g., direct access)
+                window.location.href = '../prompts.html'; // Adjust this path if your prompts.html is elsewhere
+            }
+             event.preventDefault(); // Prevent default link behavior if history back is handled
+       
+        });
+    </script>
+</body>
+</html>
