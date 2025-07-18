@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>MetaPrompts</title>
+    <link rel="stylesheet" href="styles/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* New CSS for UI enhancements, menu bar, and contact us section */
+
+        /* General UI Enhancements */
+        body {
+            font-family: 'DM Sans', sans-serif; /* Changed to DM Sans */
+            background-color: #f8f9fa; /* Light grey background */
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #ffffff; /* White header background */
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between; /* Keeps logo and menu at opposite ends */
+            align-items: center;
+        }
+
+        /* LOGO REPLACEMENT & ENHANCEMENT */
+        .logo-text {
+            font-size: 2.5em; /* Adjust size as needed for desktop */
+            margin-left: 20px;
+            display: flex; /* Use flex to align the hash and text */
+            align-items: center;
+            font-family: 'DM Sans', sans-serif; /* Ensure DM Sans for the whole logo text container */
+        }
+
+        .logo-hash {
+            /* Dynamic gradient for the '#' character */
+            background: linear-gradient(to right, #007bff, #b366ff, #ff66b3, #007bff); /* Blue, Rose-Purple, Rose-Purple, Blue */
+            background-size: 400% 100%; /* Make the gradient wider than the element */
+            -webkit-background-clip: text; /* Clip background to text shape */
+            background-clip: text;
+            -webkit-text-fill-color: transparent; /* Make text transparent to show background */ 
+            text-fill-color: transparent;
+            animation: gradient-animation 30s linear infinite; /* Slower animation speed */
+            display: inline-block; /* Required for background-clip to work */
+            margin-right: 5px; /* Space between # and MetaPrompts */
+            font-family: 'DM Sans', sans-serif; /* Ensure DM Sans */
+        }
+
+        @keyframes gradient-animation {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .logo-name {
+            color: #000; /* Black color for 'MetaPrompts' text */
+            font-family: 'DM Sans', sans-serif; /* Ensure DM Sans */
+        }
+        /* END LOGO REPLACEMENT & ENHANCEMENT */
+
+
+        main {
+            padding: 20px 30px;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 25px;
+        }
+
+      
+
+        #suggestions {
+            list-style: none;
+            padding: 0;
+            margin: 10px auto 0 auto;
+            width: 70%;
+            border: 1px solid #eee;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+            background-color: #fff;
+            max-height: 200px;
+            overflow-y: auto;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        #suggestions li {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        #suggestions li:hover {
+            background-color: #f8f9fa;
+        }
+
+        #noResults {
+            color: #dc3545;
+            margin-top: 10px;
+        }
+
+
+        /* Keyword Filters */
+        .keyword-filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .keyword-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+        }
+
+        .keyword-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Site Description */
+        .site-description {
+            background-color: #e9f7ef; /* Light green background */
+            border-left: 5px solid #28a745;
+            padding: 20px 25px;
+            margin: 40px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .site-description p {
+            font-size: 1.05em;
+            color: #333;
+        }
+
+        /* Explore Button */
+        .explore-btn-wrapper {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 60px;
+        }
+
+        .explore-button {
+            display: inline-block;
+            background-color: #6f42c1; /* Purple button */
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(111, 66, 193, 0.3);
+        }
+
+        .explore-button:hover {
+            background-color: #5b36a1;
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2c3e50; /* Dark blue footer */
+            color: white;
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 50px;
+            font-size: 0.9em;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Menu Bar (Desktop) */
+        .main-nav {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px; /* Spacing between menu items */
+        }
+
+        .main-nav li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.05em;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #007bff;
+            transition: width 0.3s ease;
+        }
+
+        .main-nav li a:hover {
+            color: #007bff;
+        }
+
+        .main-nav li a:hover::after {
+            width: 100%;
+        }
+
+        /* Info Sections (About Us, Privacy Policy, Terms and Conditions) */
+        .info-section {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 50px;
+        }
+
+        .info-section h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+        .info-section p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .info-section ul {
+            list-style: disc;
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .info-section ul li {
+            margin-bottom: 8px;
+        }
+
+        /* Contact Us Section - Simplified to just display email */
+        .contact-us-section {
+            background-color: #f0f8ff; /* Light blue background */
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            text-align: center; /* Center the content */
+        }
+
+        .contact-us-section h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            border-bottom: none; /* Remove border for contact section H2 */
+        }
+
+        .contact-us-section p {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .contact-email-display {
+            font-size: 1.3em; /* Slightly larger for visibility */
+            font-weight: bold;
+            color: #007bff; /* Blue to make it stand out as an email */
+            display: inline-block; /* Allows padding/margin for better appearance */
+            padding: 10px 15px;
+            background-color: #e6f7ff; /* Lighter background for the email itself */
+            border-radius: 5px;
+            border: 1px solid #b3d7ff; /* Subtle border */
+            word-break: break-all; /* Ensures long emails wrap */
+        }
+
+        /* NEW SLIDING BOXES STYLES */
+        .sliding-boxes-container {
+            overflow: hidden;
+            width: 100%;
+            margin-top: 30px; /* Space from search bar */
+            margin-bottom: 40px; /* Space before keyword filters */
+            position: relative;
+            background-color: #f0f8ff; /* Light blue background */
+            padding: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .sliding-boxes {
+            display: flex;
+            animation: slide 30s linear infinite; /* Adjust speed as needed */
+            white-space: nowrap; /* Keep boxes in a single line */
+            padding: 5px 0; /* Vertical padding for boxes */
+        }
+
+        .sliding-box {
+            flex: 0 0 auto; /* Don't grow, don't shrink, base on content */
+            background-color: #ffffff;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            padding: 15px 25px;
+            margin: 0 15px; /* Spacing between boxes */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #34495e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 250px; /* Minimum width for each box */
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .sliding-box:hover {
+            background-color: #e6f7ff;
+            transform: translateY(-5px);
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-50%); /* Half the content width to create loop */
+            }
+        }
+
+        /* Pause animation on hover */
+        .sliding-boxes-container:hover .sliding-boxes {
+            animation-play-state: paused;
+        }
+
+        /* NEW SAMPLE PROMPTS SECTION */
+        .sample-prompts-section {
+            margin-top: 40px;
+        }
+
+        .sample-prompts-grid {
+            display: grid;
+            /* Default to 1 column for mobile */
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 15px 0;
+        }
+
+        .sample-prompt-box {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .sample-prompt-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sample-prompt-box h3 {
+            color: #34495e;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            flex-grow: 1; /* Allows title to take available space */
+        }
+
+        .sample-prompt-box .preview-btn {
+            background-color: #6f42c1; /* Purple button */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(111, 66, 193, 0.2);
+        }
+
+        .sample-prompt-box .preview-btn:hover {
+            background-color: #5b36a1;
+            transform: translateY(-2px);
+        }
+
+        /* MODAL (POP-UP) STYLES */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px); /* Blurs background */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            width: 80%; /* Medium size */
+            max-width: 600px; /* Max width for larger screens */
+            animation-name: animatetop;
+            animation-duration: 0.4s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes animatetop {
+            from {top: -300px; opacity: 0}
+            to {top: 0; opacity: 1}
+        }
+
+        .close-button {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-prompt-title {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .modal-prompt-text {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace; /* Keeping monospace for prompt text */
+            font-size: 0.95em;
+            color: #495057;
+            white-space: pre-wrap; /* Preserves whitespace and wraps text */
+            word-wrap: break-word; /* Breaks long words if necessary */
+            max-height: 300px; /* Limit height of prompt text area */
+            overflow-y: auto; /* Add scroll if content is too long */
+            margin-bottom: 20px;
+        }
+
+        .modal-copy-btn {
+            background-color: #1c7ff9;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            align-self: center; /* Center the copy button */
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-copy-btn:hover {
+            background-color: #324a79;
+        }
+
+        /* --- HAMBURGER MENU STYLES --- */
+        .hamburger-menu {
+            display: none; /* Hidden by default on desktop */
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px; /* Desktop size */
+            height: 20px; /* Desktop size */
+            cursor: pointer;
+            z-index: 20; /* Ensure it's above other elements */
+        }
+
+        .hamburger-menu span {
+            display: block;
+            width: 100%;
+            height: 3px; /* Desktop line thickness */
+            background-color: #333;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Animation for hamburger lines */
+        .hamburger-menu.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger-menu.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-menu.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 15px; /* Slightly reduced padding for smaller screens */
+                flex-direction: row; /* Keep logo and hamburger on same line */
+                justify-content: space-between; /* Space them out */
+                align-items: center;
+            }
+
+            /* Smaller Logo on Mobile */
+            .logo-text {
+                font-size: 1.8em; /* Smaller font size for mobile logo */
+                margin-left: 0; /* Remove left margin on mobile */
+            }
+
+            /* Smaller Hamburger on Mobile */
+            .hamburger-menu {
+                display: flex; /* Show hamburger on mobile */
+                width: 25px; /* Smaller width for mobile */
+                height: 18px; /* Smaller height for mobile */
+            }
+
+            .hamburger-menu span {
+                height: 2.5px; /* Slightly thinner lines for mobile */
+            }
+
+            /* Adjusted animation for smaller hamburger */
+            .hamburger-menu.open span:nth-child(1) {
+                transform: rotate(45deg) translate(4px, 4px); /* Adjust translation */
+            }
+            .hamburger-menu.open span:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger-menu.open span:nth-child(3) {
+                transform: rotate(-45deg) translate(4px, -4px); /* Adjust translation */
+            }
+
+            .main-nav {
+                display: none; /* Hide desktop nav by default on mobile */
+                flex-direction: column;
+                position: absolute;
+                top: 60px; /* Position below header (adjust based on new header height) */
+                left: 0;
+                width: 100%;
+                background-color: #ffffff; /* White background for mobile menu */
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                z-index: 15;
+                padding: 20px 0;
+                border-top: 1px solid #eee;
+                transform: translateY(-100%); /* Start off-screen */
+                transition: transform 0.3s ease-out;
+            }
+
+            .main-nav.open {
+                display: flex; /* Show menu when open */
+                transform: translateY(0); /* Slide into view */
+            }
+
+            .main-nav li {
+                text-align: center;
+                margin-bottom: 10px; /* Space out menu items */
+            }
+
+            .main-nav li a {
+                padding: 10px 0;
+                display: block; /* Make links full width */
+                font-size: 1.1em;
+            }
+            .main-nav li a::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .main-nav li a:hover::after {
+                width: 60%; /* Smaller underline for mobile */
+            }
+
+            main {
+                padding: 15px;
+                margin: 15px auto;
+            }
+
+        
+            
+
+          
+            /* Responsive adjustments for sliding boxes */
+            .sliding-box {
+                min-width: 200px; /* Smaller min-width on mobile */
+                font-size: 1em;
+                padding: 12px 20px;
+            }
+
+            .sample-prompts-grid {
+                grid-template-columns: 1fr; /* Single column on small screens */
+            }
+
+            .modal-content {
+                width: 95%; /* Wider modal on small screens */
+                padding: 20px;
+            }
+        }
+
+        /* Desktop adjustments for sample-prompts-grid (if not already 2 columns) */
+        @media (min-width: 769px) {
+            .sample-prompts-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two columns on desktop */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-text">
+            <span class="logo-hash">#</span><span class="logo-name">MetaPrompts</span>
+        </div>
+        <nav>
+            <div class="hamburger-menu" id="hamburgerMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="main-nav" id="mainNav">
+                <li><a href="#about-us">About Us</a></li>
+                <li><a href="#privacy-policy">Privacy Policy</a></li>
+                <li><a href="#terms-conditions">Terms and Conditions</a></li>
+                <li><a href="#contact-us">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+   
+
+        <section class="sliding-boxes-container">
+            <div class="sliding-boxes" id="slidingBoxes">
+                <div class="sliding-box">Boost your productivity with ease</div>
+                <div class="sliding-box">Unlock smarter AI conversations</div>
+                <div class="sliding-box">Get faster, clearer AI results</div>
+                <div class="sliding-box">Craft prompts like a pro</div>
+                <div class="sliding-box">Save time, skip the trial and error</div>
+                <div class="sliding-box">Perfect prompts for any goal</div>
+                <div class="sliding-box">Focus on creating, not typing</div>
+                <div class="sliding-box">Boost your productivity with ease</div>
+                <div class="sliding-box">Unlock smarter AI conversations</div>
+                <div class="sliding-box">Get faster, clearer AI results</div>
+                <div class="sliding-box">Craft prompts like a pro</div>
+                <div class="sliding-box">Save time, skip the trial and error</div>
+                <div class="sliding-box">Perfect prompts for any goal</div>
+                <div class="sliding-box">Focus on creating, not typing</div>
+            </div>
+        </section>
+
+
+        <section class="sample-prompts-section">
+            <h2>Popular Prompts</h2>
+            <div class="sample-prompts-grid" id="samplePromptsGrid">
+                <div class="sample-prompt-box">
+                    <h3>Summarize an Article</h3>
+                    <button class="preview-btn" data-prompt-id="0">Preview</button>
+                </div>
+                <div class="sample-prompt-box">
+                    <h3>Generate Blog Post Ideas</h3>
+                    <button class="preview-btn" data-prompt-id="1">Preview</button>
+                </div>
+                <div class="sample-prompt-box">
+                    <h3>Write a Professional Email</h3>
+                    <button class="preview-btn" data-prompt-id="2">Preview</button>
+                </div>
+                <div class="sample-prompt-box">
+                    <h3>Brainstorm Marketing Slogans</h3>
+                    <button class="preview-btn" data-prompt-id="3">Preview</button>
+                </div>
+                <div class="sample-prompt-box">
+                    <h3>Explain Complex Concepts Simply</h3>
+                    <button class="preview-btn" data-prompt-id="4">Preview</button>
+                </div>
+                <div class="sample-prompt-box">
+                    <h3>Create a Study Schedule</h3>
+                    <button class="preview-btn" data-prompt-id="5">Preview</button>
+                </div>
+                <div class="sample-prompt-box">
+                    <h3>Develop a Fitness Plan</h3>
+                    <button class="preview-btn" data-prompt-id="6">Preview</button>
+                </div>
+                <div class="sample-prompt-box">
+                    <h3>Write a Creative Story Idea</h3>
+                    <button class="preview-btn" data-prompt-id="7">Preview</button>
+                </div>
+            </div>
+        </section>
+        <div class="explore-btn-wrapper">
+            <div class="site-description">
+                <p>
+                    <strong>MetaPrompts</strong> is your go-to library for powerful, ready-to-use prompts that unlock the full potential of AI tools. Whether you’re a student, professional, creator, or just curious, you’ll find smart, time-saving prompts tailored to your needs. Easy to browse, fun to try, and designed to spark ideas—MetaPrompts helps you do more, faster.
+                </p>
+            </div>
+
+            <a href="prompts.html" class="explore-button">Explore More Prompts ➜</a>
+        </div>
+
+        <section id="about-us" class="info-section">
+            <h2>About Us</h2>
+            <p>Welcome to <strong>MetaPrompts</strong> — your go-to platform for AI-enhanced productivity and creativity. We believe that using AI should be simple and effective. Our mission is to provide a curated library of high-quality prompts designed to help students, professionals, creators, and curious minds get the best results from their AI tools.</p>
+            <p>At MetaPrompts, we aim to make AI more accessible, practical, and enjoyable. No sign-ups, no hassle — just copy and go. We’re passionate about the future of AI and continuously work to expand our prompt collection with meaningful, categorized content that anyone can use instantly.</p>
+        </section>
+        
+        <section id="privacy-policy" class="info-section">
+            <h2>Privacy Policy</h2>
+            <p>Your privacy matters to us. This policy outlines how <strong>MetaPrompts</strong> handles your information while you use our site.</p>
+        
+            <h3>Information We Collect</h3>
+            <ul>
+                <li><strong>Non-Personal Data:</strong> We may collect anonymized usage data (e.g., browser type, time spent on pages) via tools like Google Analytics. This helps us improve our service. This data cannot be used to identify you personally.</li>
+            </ul>
+        
+            <h3>Cookies</h3>
+            <p>We use cookies to analyze site traffic and improve performance. Cookies are small text files stored on your device. You can disable cookies through your browser settings.</p>
+            <p><strong>Google may use cookies to serve ads</strong> based on your visit to this site and other websites. You can <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">learn more or opt out</a> by visiting the Google Ads Settings.</p>
+        
+            <h3>Third-Party Services</h3>
+            <p>We may use third-party services like Google Analytics and Google AdSense. These services may collect and use anonymous data in accordance with their own privacy policies.</p>
+        
+            <h3>Data Security</h3>
+            <p>We take reasonable steps to protect your information. However, no online transmission or storage method is 100% secure.</p>
+        
+            <h3>External Links</h3>
+            <p>Our website may link to external sites. We are not responsible for the content or privacy practices of those websites.</p>
+        
+            <h3>Changes to This Policy</h3>
+            <p>This privacy policy may be updated occasionally. Updates will be posted on this page. Continued use of the site means you accept any changes.</p>
+        
+            <p>By using this site, you agree to our privacy practices as outlined here.</p>
+        </section>
+        
+        <section id="terms-conditions" class="info-section">
+            <h2>Terms and Conditions</h2>
+            <p>Welcome to <strong>MetaPrompts</strong>! These terms and conditions govern your use of our website (https://www.metaprompts.shop).</p>
+            <p>By accessing and using this site, you accept these terms in full. If you do not agree, please do not use the website.</p>
+        
+            <h3>Usage</h3>
+            <p>You are allowed to browse and copy prompts for personal and non-commercial use. You must not:</p>
+            <ul>
+                <li>Republish content from MetaPrompts</li>
+                <li>Sell, rent, or sub-license content from MetaPrompts</li>
+                <li>Duplicate, modify, or distribute content without permission</li>
+                <li>Use the site for any illegal or harmful purpose</li>
+            </ul>
+        
+            <h3>Intellectual Property</h3>
+            <p>All site content (text, structure, and design) is protected by intellectual property laws. You may not use our branding or layout without consent.</p>
+        
+            <h3>Disclaimer</h3>
+            <p>All content is provided “as is” without warranties of any kind. We do not guarantee the accuracy, reliability, or performance of prompts or AI outputs.</p>
+            <p>We are not responsible for the results of using these prompts or for any issues that arise from their usage.</p>
+        
+            <h3>Limitation of Liability</h3>
+            <p>We are not liable for any indirect or consequential damages, including loss of profits, data, or use of the site. Use the website and content at your own risk.</p>
+        
+            <h3>Changes to Terms</h3>
+            <p>We may update these terms at any time. It is your responsibility to check this page for updates. Continued use of the site implies your agreement to the revised terms.</p>
+        
+            <h3>Governing Law</h3>
+            <p>These terms are governed by the laws of India. By using this website, you submit to the jurisdiction of the courts of Kerala, India, in case of any disputes.</p>
+        
+            <h3>Contact</h3>
+            <p>If you have questions about these terms, please reach out via email at <a href="mailto:your@email.com">your@email.com</a>.</p>
+        </section>
+        
+
+
+        <section id="contact-us" class="contact-us-section">
+            <h2>Contact Us</h2>
+            <p>For inquiries, feedback, or support, please copy our email address and send us a message:</p>
+            <span class="contact-email-display">your.placeholder.email@gmail.com</span>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #777;">
+                Simply highlight and copy the email address above to send us an email.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 MetaPrompts. All rights reserved.</p>
+    </footer>
+
+    <div id="promptModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 class="modal-prompt-title"></h3>
+            <pre class="modal-prompt-text"></pre>
+            <button class="modal-copy-btn">Copy Prompt</button>
+        </div>
+    </div>
+    <script src="data/prompts.js"></script>
+    <script src="scripts/script.js"></script>
+
+    <script>
+        // Data for sample prompts (You'll likely get this from your prompts.js or a similar data source)
+        // For demonstration, I'm defining a small array here.
+        // Make sure your prompts.js has a 'prompts' array with objects like { title: "...", prompt: "..." }
+        const samplePromptsData = [
+            { id: 0, title: "Summarize an Article", prompt: "Summarize the following article in 3 bullet points, highlighting the main conclusions:\n\n[Paste article here]" },
+            { id: 1, title: "Generate Blog Post Ideas", prompt: "Generate 5 engaging blog post ideas about [topic], focusing on [audience] and [goal]." },
+            { id: 2, title: "Write a Professional Email", prompt: "Write a professional email to [recipient] to [purpose], including [key information]." },
+            { id: 3, title: "Brainstorm Marketing Slogans", prompt: "Brainstorm 10 catchy marketing slogans for a [product/service] that appeals to [target demographic]." },
+            { id: 4, title: "Explain Complex Concepts Simply", prompt: "Explain [complex concept] to a [target audience, e.g., 5th grader] in simple terms, using an analogy." },
+            { id: 5, title: "Create a Study Schedule", prompt: "Create a study schedule for [subject/exam] for [duration, e.g., next 3 days], focusing on [topics/priorities]." },
+            { id: 6, title: "Develop a Fitness Plan", prompt: "Develop a 7-day beginner fitness plan focusing on [type of exercise, e.g., bodyweight exercises], including [duration] per day." },
+            { id: 7, title: "Write a Creative Story Idea", prompt: "Give me 3 creative story ideas based on the following elements: [Element 1], [Element 2], [Element 3]." }
+        ];
+
+        // --- JavaScript for Sliding Boxes (Existing Functionality) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const slidingBoxes = document.getElementById('slidingBoxes');
+            // The CSS animation handles the core looping.
+            // If the content changes dynamically, you might need more complex JS.
+
+            // --- Mobile Navigation Toggle ---
+            const hamburgerMenu = document.getElementById('hamburgerMenu');
+            const mainNav = document.getElementById('mainNav');
+
+            hamburgerMenu.addEventListener('click', () => {
+                hamburgerMenu.classList.toggle('open');
+                mainNav.classList.toggle('open');
+            });
+
+            // Close the mobile menu when a navigation link is clicked (optional, but good UX)
+            mainNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mainNav.classList.contains('open')) {
+                        hamburgerMenu.classList.remove('open');
+                        mainNav.classList.remove('open');
+                    }
+                });
+            });
+
+            // --- Modal/Prompt Viewer Logic (Existing Functionality with slight modifications for clarity) ---
+            const modal = document.getElementById("promptModal");
+            const closeButton = document.querySelector(".close-button");
+            const modalPromptTitle = document.querySelector(".modal-prompt-title");
+            const modalPromptText = document.querySelector(".modal-prompt-text");
+            const copyButton = document.querySelector(".modal-copy-btn");
+            const samplePromptButtons = document.querySelectorAll(".sample-prompt-box .preview-btn");
+
+            samplePromptButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    const promptId = this.dataset.promptId;
+                    const promptData = samplePromptsData.find(p => p.id == promptId); // Use '==' for loose comparison as data-prompt-id is string
+                    if (promptData) {
+                        modalPromptTitle.textContent = promptData.title;
+                        modalPromptText.textContent = promptData.prompt; // Use textContent for plain text
+                        modal.style.display = "flex"; // Show the modal
+                    }
+                });
+            });
+
+            closeButton.addEventListener("click", function() {
+                modal.style.display = "none"; // Hide the modal
+            });
+
+            window.addEventListener("click", function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none"; // Hide if clicked outside modal content
+                }
+            });
+
+            copyButton.addEventListener("click", function() {
+                const textToCopy = modalPromptText.textContent;
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        alert("Prompt copied to clipboard!");
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        alert("Failed to copy prompt. Please try again or copy manually.");
+                    });
+            });
+
+          
+
+                if (query.length > 0) {
+                    const filteredPrompts = samplePromptsData.filter(prompt =>
+                        prompt.title.toLowerCase().includes(query) || prompt.prompt.toLowerCase().includes(query)
+                    );
+
+                    if (filteredPrompts.length > 0) {
+                        filteredPrompts.forEach(prompt => {
+                            const li = document.createElement('li');
+                            li.textContent = prompt.title;
+                            li.dataset.promptId = prompt.id; // Store ID to retrieve full prompt later
+                            li.addEventListener('click', function() {
+                                // When a suggestion is clicked, populate search bar and open modal
+                                searchBar.value = this.textContent;
+                                suggestionsList.innerHTML = ''; // Clear suggestions
+                                noResultsMessage.classList.add('hidden');
+
+                                const selectedPromptId = this.dataset.promptId;
+                                const selectedPromptData = samplePromptsData.find(p => p.id == selectedPromptId);
+                                if (selectedPromptData) {
+                                    modalPromptTitle.textContent = selectedPromptData.title;
+                                    modalPromptText.textContent = selectedPromptData.prompt;
+                                    modal.style.display = "flex";
+                                }
+                            });
+                            suggestionsList.appendChild(li);
+                        });
+                    } else {
+                        noResultsMessage.classList.remove('hidden'); // Show no results
+                    }
+                }
+            });
+
+            // Hide suggestions when clicking outside search bar or suggestions list
+            document.addEventListener('click', function(event) {
+                if (!searchBar.contains(event.target) && !suggestionsList.contains(event.target)) {
+                    suggestionsList.innerHTML = '';
+                    noResultsMessage.classList.add('hidden');
+                }
+            });
+        
+    </script>
+</body>
+</html>

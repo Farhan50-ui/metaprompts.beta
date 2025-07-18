@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Categories | MetaPrompts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* New UI: Balanced Blue, White, and Purple for prompts.html */
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #eef2f7; /* Very light blue-grey background */
+            color: #333; /* Dark text for readability */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center; /* Center content horizontally */
+            justify-content: center; /* Center content vertically */
+            overflow-x: hidden;
+        }
+
+        /* Container for content */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+            background-color: #ffffff; /* Pure white background for the container */
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Soft, subtle shadow */
+            padding: 40px;
+            border: 1px solid #e0e0e0; /* Light, almost invisible border */
+        }
+
+        /* Header Styling */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eef2f7; /* Soft separator matching background */
+            position: relative; /* Needed for positioning the home button on desktop */
+        }
+
+        .header h2 {
+            font-size: 3.2em;
+            font-weight: 700;
+            color: #007bff; /* Primary blue for the main title */
+            margin: 0;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 8px rgba(0, 123, 255, 0.2); /* Subtle blue shadow */
+        }
+
+        /* Home Button Styling (Desktop - text version) */
+        .home-button {
+            position: absolute; /* Position relative to the header */
+            left: 40px; /* Aligned to the left */
+            top: 50%; /* Vertically centered */
+            transform: translateY(-50%); /* Adjust for true centering */
+            background-color: #6f42c1; /* Purple background */
+            color: #ffffff; /* White text */
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 30px; /* Pill shape */
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3); /* Purple shadow */
+            display: inline-block; /* Ensure it's a block for padding/margin */
+        }
+
+        .home-button .home-text {
+            display: inline; /* Show text on desktop */
+        }
+
+        .home-button .fas.fa-home {
+            display: none; /* Hide icon on desktop */
+        }
+
+        .home-button:hover {
+            background-color: #5b36a1; /* Darker purple on hover */
+            transform: translateY(-50%) scale(1.05); /* Slight scale up on hover */
+            box-shadow: 0 6px 20px rgba(111, 66, 193, 0.4);
+        }
+
+        /* Category Grid Styling */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Flexible columns, slightly wider min for desktop */
+            gap: 30px; /* Generous spacing between cards */
+        }
+
+        .category-card {
+            background-color: #f8faff; /* Very light blue background for cards */
+            color: #34495e; /* Dark text for contrast */
+            text-decoration: none;
+            padding: 35px 25px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 130px; /* Consistent height */
+            transition: all 0.3s ease-in-out;
+            border: 1px solid #cceeff; /* Light blue border */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Soft card shadow */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Accent bar at the top of the card */
+        .category-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px; /* Slightly thicker accent bar */
+            background: linear-gradient(90deg, #6f42c1 0%, #007bff 100%); /* Purple to Blue gradient accent */
+            transform: translateY(-100%); /* Start hidden above */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px); /* Lift effect */
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+            border-color: #8a2be2; /* Purple tint border on hover */
+            color: #6f42c1; /* Text color changes to purple on hover */
+            background-color: #ffffff; /* White background on hover */
+        }
+
+        .category-card:hover:before {
+            transform: translateY(0%); /* Show the gradient bar on hover */
+        }
+
+        /* Footer Styling */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #6c757d; /* Slightly darker grey for footer text */
+            text-shadow: none; /* No shadow for cleaner look */
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 30px;
+            }
+            .header h2 {
+                font-size: 2.8em;
+            }
+            .home-button {
+                left: 30px;
+                padding: 10px 20px;
+                font-size: 0.95em;
+            }
+            .category-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 25px;
+            }
+            .category-card {
+                font-size: 1.3em;
+                min-height: 120px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 30px auto;
+                padding: 25px;
+            }
+            .header {
+                /* Make header a flex container to align title and button */
+                display: flex;
+                justify-content: space-between; /* Puts title and button on opposite ends */
+                align-items: center; /* Vertically centers them */
+                margin-bottom: 40px; /* Maintain spacing below header */
+                padding-bottom: 20px; /* Keep separator padding */
+                position: static; /* Remove absolute positioning context */
+            }
+            .header h2 {
+                font-size: 2.2em;
+                margin: 0; /* Remove specific margins, let flexbox handle spacing */
+                text-align: left; /* Align title to left within flex container */
+                flex-grow: 1; /* Allow title to take available space */
+            }
+            .home-button {
+                /* Adjust button for mobile: now an icon */
+                position: static;
+                transform: none;
+                margin: 0; /* Remove specific margins, let flexbox handle spacing */
+                padding: 10px 12px; /* Square padding for icon */
+                font-size: 1.2em; /* Larger icon size */
+                width: auto; /* Allow width to adjust to content */
+                border-radius: 50%; /* Make it round */
+                box-shadow: 0 2px 8px rgba(111, 66, 193, 0.2); /* Smaller shadow for icon */
+            }
+
+            .home-button .home-text {
+                display: none; /* Hide text on mobile */
+            }
+
+            .home-button .fas.fa-home {
+                display: inline; /* Show icon on mobile */
+            }
+
+            .home-button:hover {
+                 transform: none; /* Override desktop hover transform */
+            }
+
+
+            .category-grid {
+                /* Force two columns on mobile */
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            .category-card {
+                font-size: 1.2em;
+                padding: 30px 20px;
+                min-height: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 20px auto;
+                padding: 15px;
+                border-radius: 10px;
+            }
+            .header {
+                /* Adjust header for very small screens if needed, but flex should still work */
+                flex-direction: row; /* Keep title and icon side-by-side if possible */
+                align-items: center; /* Center items vertically */
+            }
+            .header h2 {
+                font-size: 1.8em;
+                margin-right: 10px; /* Small space between title and icon */
+            }
+            .home-button {
+                padding: 8px 10px; /* Smaller padding for icon */
+                font-size: 1em; /* Smaller icon size */
+            }
+            .category-grid {
+                grid-template-columns: 1fr; /* Single column on very small phones */
+                gap: 15px;
+            }
+            .category-card {
+                font-size: 1em;
+                padding: 25px 15px;
+                min-height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h2>Explore Categories</h2>
+            <a href="index.html" class="home-button" aria-label="Home">
+                <span class="home-text">Home</span>
+                <i class="fas fa-home"></i>
+            </a>
+        </header>
+
+        <main class="category-grid">
+            <a href="categories/category1.html" class="category-card">Productivity</a>
+            <a href="categories/category2.html" class="category-card">Students</a>
+            <a href="categories/category3.html" class="category-card">Business</a>
+            <a href="categories/category4.html" class="category-card">Designers</a>
+            <a href="categories/category5.html" class="category-card">Fun & Random</a>
+            <a href="categories/category6.html" class="category-card">Writing</a>
+            <a href="categoriescategory7.html" class="category-card">Marketing</a>
+            <a href="categories/category8.html" class="category-card">Learning</a>
+            <a href="categories/category9.html" class="category-card">Product Demos</a>
+            <a href="categories/category10.html" class="category-card">Idea Generator</a>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 MetaPrompts. All rights reserved.</p>
+    </footer>
+</body>
+</html>
